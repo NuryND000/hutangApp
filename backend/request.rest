@@ -1,0 +1,31 @@
+//instal extensi REST client biar bisa coba ini
+
+//get sumua
+GET http://127.0.0.1:5001/users
+
+###
+//get berdasrjan id
+GET http://127.0.0.1:5001/users/66098f63d235318b45c0caf6
+
+###
+//buar user baru
+POST  http://127.0.0.1:5001/users
+Content-Type: application/json
+
+{
+    "name": "bima bagus wicaksono",
+    "email": "bima@gmail.com",
+    "gender": "male"
+}
+
+###
+//update user berdasarkan id
+PATCH   http://127.0.0.1:5001/users/66098f63d235318b45c0caf6
+Content-Type: application/json
+
+{
+}
+
+###
+//hapus user
+DELETE    http://127.0.0.1:5001/users/6609900bd235318b45c0cafd
