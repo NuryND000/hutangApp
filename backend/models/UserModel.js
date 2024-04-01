@@ -5,11 +5,19 @@ const User = mongoose.Schema({
         type: String,
         required: true
     },
-    email:{
+    status:{
         type: String,
         required: true
     },
-    gender:{
+    nominal:{
+        type: Number,
+        required: true
+    },
+    ket:{
+        type: String,
+        required: true
+    },
+    date:{
         type: String,
         required: true
     }
