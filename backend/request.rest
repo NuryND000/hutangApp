@@ -13,9 +13,11 @@ POST  http://127.0.0.1:5001/users
 Content-Type: application/json
 
 {
-    "name": "bima bagus wicaksono",
-    "email": "bima@gmail.com",
-    "gender": "male"
+    "name": "bima",
+    "status": "berikan",
+    "nominal": 15000,
+    "ket": "hutang pulsa",
+    "date": "01/04/2024"
 }
 
 ###
