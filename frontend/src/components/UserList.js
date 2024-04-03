@@ -43,7 +43,8 @@ const UserList = () => {
           <tr>
             <th>No</th>
             <th>Name</th>
-            <th>Sisa Hutang</th>
+            <th>Sisa Hutang Pelanggan</th>
+            <th>Sisa Hutang anda</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>
@@ -53,8 +54,9 @@ const UserList = () => {
             <tr key={user._id}>
               <td>{index + 1}</td>
               <td>{user.name}</td>
-              <td>{user.sisahutang}</td>
-              <td>{user.sisahutang !== 0 ? user.sisahutang <= 0 ? "kembalian kurang": "belum lunas" : "lunas"}</td>
+              <td>{user.sisahutang <= 0 ? "-" : user.sisahutang}</td>
+              <td>{user.sisahutang >= 0 ? "-" : Math.abs(user.sisahutang)}</td>
+              <td>{user.sisahutang !== 0 ? user.sisahutang <= 0 ? "anda berhutang": "belum lunas" : "lunas"}</td>
               <td>
                 <Link to={`edit/${user._id}`} className="mx-1">
                   <Button variant="warning" size="sm"

@@ -41,6 +41,7 @@ export default function SearchUser() {
 
     return (
         <Container fluid className="mt-4">
+        <h3 style={{color:"grey"}}>masih dalam pengembangan....</h3>
             <Row>
                 <Col>
                     <Form >
