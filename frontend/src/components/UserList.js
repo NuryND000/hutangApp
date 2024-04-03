@@ -54,7 +54,7 @@ const UserList = () => {
               <td>{index + 1}</td>
               <td>{user.name}</td>
               <td>{user.sisahutang}</td>
-              <td>{user.sisahutang !== 0 ? user.sisahutang <= 0 ? "punya hutang": "lunas" : "belum lunas"}</td>
+              <td>{user.sisahutang !== 0 ? user.sisahutang <= 0 ? "kembalian kurang": "belum lunas" : "lunas"}</td>
               <td>
                 <Link to={`edit/${user._id}`} className="mx-1">
                   <Button variant="warning" size="sm"
