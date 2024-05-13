@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Col, Row } from "react-bootstrap";
 
 const AddUser = () => {
   const [name, setName] = useState("");
@@ -20,32 +21,38 @@ const AddUser = () => {
 
   return (
     <>
-    <h1 className="py-2">Tambah pelanggan</h1>
-      <div className="columns mt-1">
-      <div className="column is-half">
-        <form onSubmit={saveUser}>
-        <div className="field">
-            <label className="label">Name</label>
-            <div className="control">
-              <input
-                type="text"
-                className="input"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Name"
-              />
+      <Row>
+        <Col></Col>
+        <Col><h1 className="py-2">Tambah pelanggan</h1></Col>
+        <Col></Col>
+      </Row>
+      <Row>
+        <Col></Col>
+        <Col md={5}>
+          <form onSubmit={saveUser}>
+            <div className="field">
+              <label className="label">Name</label>
+              <div className="control">
+                <input
+                  type="text"
+                  className="input"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Name"
+                />
+              </div>
             </div>
-          </div>
-          <div className="field">
-            <div className="control">
-              <button type="submit" className="button is-success">
-                Save
-              </button>
+            <div className="field">
+              <div className="control">
+                <button type="submit" className="button is-success">
+                  Save
+                </button>
+              </div>
             </div>
-          </div>
-        </form>
-      </div>
-    </div>
+          </form>
+        </Col>
+        <Col></Col>
+      </Row>
     </>
   );
 };

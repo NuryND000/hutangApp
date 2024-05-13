@@ -23,6 +23,10 @@ const Bayar = mongoose.Schema({
         type: Number,
         required: true
     },
+    ket: {
+        type: String,
+        required: true
+    },
 })
 const User = mongoose.Schema({
     name: {
@@ -34,6 +38,11 @@ const User = mongoose.Schema({
         required:true,
         default: 0
 
+    },
+    kembalian: {
+        type:Number,
+        required:true,
+        default:0
     },
     hutang: [
         Hutang,

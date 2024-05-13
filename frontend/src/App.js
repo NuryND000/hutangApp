@@ -3,19 +3,21 @@ import UserList from "./components/UserList";
 import AddUser from "./components/AddUser";
 import EditUser from "./components/EditUser";
 import NavBar from "./components/NavBar";
-import SearchUser from "./components/SearchUser";
+import SearchPelanggan from "./components/SearchUser";
+import DetailUser from "./components/detailUser";
 
 function App() {
   return (
-    <div className="pb-5"  style={{ backgroundColor: '#E0E0E2'}}>
+    <div className="pb-5">
       <NavBar />
       <BrowserRouter>
         <div className="container" >
           <Routes>
             <Route path="/" element={<UserList />} />
             <Route path="add" element={<AddUser />} />
-            <Route path="cari" element={<SearchUser />} />
+            <Route path="cari" element={<SearchPelanggan />} />
             <Route path="edit/:id" element={<EditUser />} />
+            <Route path="detail/:id" element={<DetailUser />} />
           </Routes>
         </div>
       </BrowserRouter>
