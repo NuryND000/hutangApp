@@ -5,6 +5,7 @@ import EditUser from "./components/EditUser";
 import NavBar from "./components/NavBar";
 import SearchPelanggan from "./components/SearchUser";
 import DetailUser from "./components/detailUser";
+import TidakAda from "./components/tidakada";
 
 function App() {
   return (
@@ -18,11 +19,12 @@ function App() {
             <Route path="cari" element={<SearchPelanggan />} />
             <Route path="edit/:id" element={<EditUser />} />
             <Route path="detail/:id" element={<DetailUser />} />
+            <Route path="editpel/:id" element={<TidakAda />} />
           </Routes>
         </div>
       </BrowserRouter>
     </div>
-
+ //has
   );
 }
 

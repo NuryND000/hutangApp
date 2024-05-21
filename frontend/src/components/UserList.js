@@ -107,6 +107,12 @@ const UserList = () => {
                     Transaksi Baru
                   </Button>
                 </Link>
+                <Link to={`editpel/${user._id}`} className="mx-1">
+                  <Button color="blue" size="sm"
+                  >
+                    Edit
+                  </Button>
+                </Link>
                 <Link to={`detail/${user._id}`} className="mx-1">
                   <Button variant="warning" size="sm"
                   >
