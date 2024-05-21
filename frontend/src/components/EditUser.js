@@ -75,10 +75,14 @@ const EditUser = () => {
     }
 
     const bayarHutangSchema = {
-      sisahutang: updatedSisaHutang,
+      sisahutang: updatedSisaHutang <=0?  0 : updatedSisaHutang,
+
+      kembalian: updatedKembalian,
       bayar: [...bayarHutangUser, {
         bayar: nominal,
-        date: date
+        date: date,
+        ket: ket ? ket : "tidak ada keterangan",
+
       }]
     }
 
