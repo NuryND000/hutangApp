@@ -40,7 +40,7 @@ const UserList = () => {
       );
       const sumOfBayar = bayarArray.reduce((total, bayar) => total + bayar, 0);
       // Update sisahutang property based on the sum
-      return { ...user, sisahutang: sumOfHutang - sumOfBayar };
+      return {...user};
     });
     setUser(updatedUsers);
   };
