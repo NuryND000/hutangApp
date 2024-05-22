@@ -32,7 +32,7 @@ function UpdatePelanggan() {
 
   return (
     <div className=" align-items-center justify-content-center">
-      <div className="w-50 border bg-secondary text-white p-5 mt-5 mx-auto">
+      <div className="w-50 border bg-light text-black p-5 mt-5 mx-auto">
         {" "}
         {/* Tambahkan margin dan align center di sini */}
         <form onSubmit={handleSubmit}>
