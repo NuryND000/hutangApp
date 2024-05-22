@@ -32,7 +32,7 @@ function UpdatePelanggan() {
 
   return (
     <div className=" align-items-center justify-content-center">
-      <div className="w-50 border bg-light text-black p-5 mt-5 mx-auto">
+      <div className="w-50 border bg-light text-black p-5 mt-5 mx-auto rounded">
         {" "}
         {/* Tambahkan margin dan align center di sini */}
         <form onSubmit={handleSubmit}>
@@ -47,7 +47,7 @@ function UpdatePelanggan() {
               onChange={(e) => setValues({ ...values, name: e.target.value })}
             />
             <br />
-            <button className="btn btn-info">Update</button>
+            <button className="btn btn-success">Update</button>
           </div>
         </form>
       </div>

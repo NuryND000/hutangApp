@@ -40,7 +40,7 @@ const UserList = () => {
       );
       const sumOfBayar = bayarArray.reduce((total, bayar) => total + bayar, 0);
       // Update sisahutang property based on the sum
-      return {...user};
+      return { ...user };
     });
     setUser(updatedUsers);
   };
@@ -97,11 +97,8 @@ const UserList = () => {
                 <td>{user.sisahutang == 0 ? "-" : user.sisahutang}</td>
                 <td>{user.kembalian == 0 ? "-" : user.kembalian}</td>
                 <td>
-                  {user.sisahutang != 0
-                    ? user.sisahutang <= 0
-                      ? "kembalian kurang"
-                      : "belum lunas"
-                    : "lunas"}
+                  {user.kembalian > 0 ? 'hutang kembalian' : user.sisahutang <= 0 ? 'lunas' : 'belum lunas'
+                  }
                 </td>
                 <td className="action-column">
                   <Link to={`edit/${user._id}`} className="mx-1">
