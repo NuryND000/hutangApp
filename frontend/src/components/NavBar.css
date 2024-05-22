@@ -1,0 +1,14 @@
+/* NavBar.css */
+.custom-nav-link {
+    font-size: 30px;       /* Mengatur ukuran font */
+    font-weight: bold;     /* Membuat teks menjadi tebal */
+    color: #000000;        /* Mengatur warna teks */
+    margin-right: 15px;    /* Mengatur jarak antar item */
+    transition: color 0.3s, transform 0.3s;
+  }
+  
+  .custom-nav-link:hover {
+    color: #000000;        /* Mengubah warna teks saat dihover */
+    transform: scale(1.0); /* Memperbesar teks saat dihover */
+  }
+  
