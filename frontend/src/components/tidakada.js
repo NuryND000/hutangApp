@@ -31,7 +31,7 @@ function UpdatePelanggan() {
   };
 
   return (
-    <div className="d-flex w-100 vh-100 align-items-center justify-content-center">
+    <div className=" align-items-center justify-content-center">
       <div className="w-50 border bg-secondary text-white p-5 mt-5 mx-auto">
         {" "}
         {/* Tambahkan margin dan align center di sini */}
