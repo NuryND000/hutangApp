@@ -5,7 +5,7 @@ import UserRoute from "./routes/UserRoute.js";
 
 const app = express();
 mongoose.connect(
-  "mongodb://localhost:27017/hutangApp",
+  "mongodb://127.0.0.1:27017/hutangApp",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
