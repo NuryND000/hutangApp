@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+
 import {
   Col,
   Container,
@@ -31,7 +32,7 @@ export default function DetailUser() {
 
   useEffect(() => {
     getUserById();
-  }, []);
+  }, [id]);
 
   const getUserById = async () => {
     const response = await axios.get(`http://localhost:5001/users/${id}`);
@@ -54,6 +55,51 @@ export default function DetailUser() {
       console.log(error);
     }
   };
+
+  const lunaskanUser = async (id, navigate, sisahutang, kembalian) => {
+    const now = new Date();
+    const hariIni = now.toISOString();
+    const schemaLunasHutang = {
+      sisahutang: 0,
+      bayar: [...bayarHutangUser, {
+        bayar: sisahutang,
+        date: hariIni,
+        ket: "dilunaskan",
+      }]
+    }
+    const schemaLunasKembalian = {
+      kembalian: 0,
+      hutang: [...hutangUser, {
+        hutang: kembalian,
+        date: hariIni,
+        ket: "dilunaskan",
+      }]
+    }
+
+    const update = async (schema) => {
+      if (
+        window.confirm(`Apakah anda yakin untuk melunaskan hutang?`)
+      ) {
+        try {
+          await axios.patch(`http://localhost:5001/users/${id}`, schema);
+          navigate('/'); // Navigate to a temporary route
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+
+    if (sisahutang > 0) {
+      update(schemaLunasHutang)
+    } else if (kembalian > 0) {
+      update(schemaLunasKembalian)
+    } else {
+      window.confirm(`tidak ada hutang atau hutang kembalian`)
+    }
+
+
+
+  }
 
   return (
     <>
@@ -98,6 +144,23 @@ export default function DetailUser() {
             <Col md={6}></Col>
             <Col md={6}>
               <Button
+                variant="warning"
+                size="sm"
+                className="mx-1 mb-2"
+                style={{ width: "100%" }}
+                onClick={() => {
+                  lunaskanUser(id, navigate, sisahutang, kembalian);
+
+                }}
+              >
+                Lunaskan
+              </Button>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}></Col>
+            <Col md={6}>
+              <Button
                 variant="danger"
                 size="sm"
                 className="mx-1 mb-2"
@@ -122,7 +185,7 @@ export default function DetailUser() {
         </Col>
       </Row>
       <Row></Row>
-      
+
       <Row className="mt-4">
         <Col>
           <h6 className="text-center">Detail Hutang</h6>
@@ -202,6 +265,14 @@ export default function DetailUser() {
             </tbody>
           </Table>
         </Col>
+      </Row>
+      <Row>
+        <Col>
+
+        </Col>
+        <Col></Col>
+        <Col></Col>
+        <Col></Col>
       </Row>
     </>
   );

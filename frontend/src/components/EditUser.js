@@ -16,6 +16,7 @@ const EditUser = () => {
   const [date, setDate] = useState(null);
   const [ket, setKet] = useState("");
   const [kembalian, setKembalian] = useState(0);
+  const [sisaHutang, setSisaHutang] = useState(0);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -29,6 +30,7 @@ const EditUser = () => {
   const getUserById = async () => {
     const response = await axios.get(`http://localhost:5001/users/${id}`);
     setHutangUser(response.data.hutang)
+    setSisaHutang(response.data.sisahutang)
     setBayarHutangUser(response.data.bayar)
     setName(response.data.name);
     setStatus(response.data.status);
@@ -36,8 +38,8 @@ const EditUser = () => {
     setDate(response.data.date);
     setKet(response.data.ket);
     setKembalian(response.data.kembalian);
-    console.log(response.data.kembalian);
-    console.log(kembalian);
+    // console.log(response.data.kembalian);
+    // console.log(kembalian);
 
   };
 
@@ -46,37 +48,47 @@ const EditUser = () => {
     const transactionAmount = parseFloat(nominal); // Convert nominal to a float
     let remainingDebt = 0;
     let kembalianDebt = 0;
+    let bayar = 0;
 
     // Calculate remaining debt based on transaction type
     if (transaksi === "hutangbaru") {
       remainingDebt = transactionAmount;
-      kembalianDebt = -transactionAmount;
+      kembalianDebt = transactionAmount;
     } else if (transaksi === "bayarhutang") {
-      remainingDebt = -transactionAmount;
+      bayar = transactionAmount;
     } else if (transaksi === "kembalian kurang") {
-      remainingDebt = -transactionAmount;
+      remainingDebt = transactionAmount;
       kembalianDebt = transactionAmount;
     }
 
     // Update sisahutang in the database
     const updatedSisaHutang = (hutangUser.reduce((acc, curr) => acc + parseFloat(curr.hutang), 0) + remainingDebt) - (bayarHutangUser.reduce((acc, curr) => acc + parseFloat(curr.bayar), 0));
-    const updatedKembalian = (kembalianDebt + kembalian) - updatedSisaHutang;
+    const updatedKembalian = (kembalian) - remainingDebt;
 
-    console.log(updatedSisaHutang);
+    console.log(`updatedSisaHutang ${updatedSisaHutang} updatedKembalian ${updatedKembalian}`);
+
+    const updatedSisaHutangBayar = hutangUser.reduce((acc, curr) => acc + parseFloat(curr.hutang), 0) - (bayarHutangUser.reduce((acc, curr) => acc + parseFloat(curr.bayar), 0) + bayar);
+    const updatedKembalianBayar = kembalian + (kembalian - updatedSisaHutangBayar);
+
+    console.log(`updatedSisaHutangBayar ${updatedSisaHutangBayar} updatedKembalianBayar ${updatedKembalianBayar}`);
+
+    const updatedSisaHutangKembalian = sisaHutang - (kembalian + kembalianDebt);
+    const updatedKembaliankembalian = Math.abs(updatedSisaHutangKembalian);
+
+    console.log(`updated ${updatedSisaHutangKembalian} sisaHutang ${sisaHutang}`);
 
     const hutangSchema = {
-      sisahutang: updatedSisaHutang <= 0 ? 0 : updatedSisaHutang,
-      kembalian: updatedKembalian <0 ? 0 : updatedKembalian,
+      sisahutang: updatedSisaHutang,
+      kembalian: updatedKembalian <= 0 ? 0 : kembalian === 0 ? 0 : Math.abs(updatedKembalian),
       hutang: [...hutangUser, {
         date: date,
         hutang: nominal,
         ket: ket ? ket : "tidak ada keterangan",
       }]
     }
-
     const bayarHutangSchema = {
-      sisahutang: updatedSisaHutang <= 0 ?  0 : updatedSisaHutang,
-      kembalian: updatedKembalian,
+      sisahutang: updatedSisaHutangBayar <= 0 ? 0 : updatedSisaHutangBayar,
+      kembalian: Math.abs(updatedKembalianBayar),
       bayar: [...bayarHutangUser, {
         bayar: nominal,
         date: date,
@@ -84,12 +96,9 @@ const EditUser = () => {
 
       }]
     }
-
     const kembalianSchema = {
-      sisahutang: updatedSisaHutang < 0 ? 0 : updatedSisaHutang,
-      kembalian: updatedSisaHutang < 0 ? Math.abs(updatedSisaHutang) : 0,
-      // sisahutang: updatedSisaHutang < 0 ? 0 : updatedSisaHutang,
-      // kembalian: updatedKembalian,
+      sisahutang: updatedSisaHutangKembalian <= 0 ? 0 : updatedSisaHutangKembalian,
+      kembalian: updatedKembaliankembalian,
       bayar: [...bayarHutangUser, {
         bayar: nominal,
         date: date,
@@ -97,10 +106,22 @@ const EditUser = () => {
       }]
     }
     try {
-      await axios.patch(`http://localhost:5001/users/${id}`, transaksi === "hutangbaru" ?
-        hutangSchema
-        : transaksi === "bayarhutang" ? bayarHutangSchema : kembalianSchema
-      );
+      let schema;
+      switch (transaksi) {
+        case "hutangbaru":
+          schema = hutangSchema;
+          break;
+        case "bayarhutang":
+          schema = bayarHutangSchema;
+          break;
+        case "kembalian kurang":
+          schema = kembalianSchema;
+          break;
+        default:
+          throw new Error("Invalid transaction type");
+      }
+
+      await axios.patch(`http://localhost:5001/users/${id}`, schema);
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -135,20 +156,48 @@ const EditUser = () => {
               <Form.Control
                 as="select"
                 value={status}
-                onChange={(e) => SetTransaksi(e.target.value)}
+                onChange={(e) => {
+                  SetTransaksi(e.target.value);
+
+                }}
                 className="form-control" // Add form-control class
                 style={{ appearance: "auto", borderRadius: "0" }} // Custom styling for appearance
               >
-                <option value="hutangbaru">hutang baru</option>
-                <option value="bayarhutang">bayar hutang</option>
+                {/* <option value="hutangbaru">hutang baru</option>
                 <option value="kembalian kurang">kembalian kurang</option>
+                <option value="bayarhutang">bayar hutang</option> */}
+                {/* if({ sisaHutang} == 0) {
+                  <>
+                    <option value="hutangbaru">hutang baru</option>
+                    <option value="kembalian kurang">kembalian kurang</option>
+                  </>
+                } else {
+                  <>
+                    <option value="hutangbaru">hutang baru</option>
+                    <option value="kembalian kurang">kembalian kurang</option>
+                    <option value="bayarhutang">bayar hutang</option>
+                  </>
+                } */}
+
+                <>
+                  {sisaHutang === 0 ? (
+                    <>
+                      <option value="hutangbaru">hutang baru</option>
+                      <option value="kembalian kurang">kembalian kurang</option>
+                    </>
+                  ) : (
+                    <>
+                      <option value="hutangbaru">hutang baru</option>
+                      <option value="bayarhutang">bayar hutang</option>
+                      <option value="kembalian kurang">kembalian kurang</option>
+                    </>
+                  )}
+                </>
               </Form.Control>
             </Col>
           </Form.Group>
-
-
           <Form.Group as={Row} controlId="formNominal" className="m-1">
-            <Form.Label column sm={4}>Nominal</Form.Label>
+            <Form.Label column sm={4}>Nominal </Form.Label>
             <Col sm={8}>
               <Form.Control
                 type="text"
@@ -166,7 +215,7 @@ const EditUser = () => {
                   }
                 }}
                 placeholder="nominal"
-              />
+              /><p className="text-bold">Sisa hutang : {sisaHutang}</p>
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="formDate" className="m-1">
@@ -189,19 +238,20 @@ const EditUser = () => {
               </div>
             </Col>
           </Form.Group>
-
-          <Form.Group as={Row} controlId="formKeterangan" className="m-1">
-            <Form.Label column sm={4}>Keterangan</Form.Label>
-            <Col sm={8}>
-              <Form.Control
-                as="textarea"
-                rows={4}
-                value={ket}
-                onChange={(e) => setKet(e.target.value)}
-                placeholder="keterangan"
-              />
-            </Col>
-          </Form.Group>
+          {transaksi !== 'kembalian kurang' && (
+            <Form.Group as={Row} controlId="formKeterangan" className="m-1">
+              <Form.Label column sm={4}>Keterangan</Form.Label>
+              <Col sm={8}>
+                <Form.Control
+                  as="textarea"
+                  rows={4}
+                  value={ket}
+                  onChange={(e) => setKet(e.target.value)}
+                  placeholder="keterangan"
+                />
+              </Col>
+            </Form.Group>
+          )}
 
           <Form.Group as={Row} className="m-1">
             <Col md={4}></Col>
