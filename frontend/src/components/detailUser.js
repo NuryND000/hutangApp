@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-
 import {
   Col,
   Container,
@@ -12,6 +11,7 @@ import {
 } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import "./App.css"; // Pastikan mengimpor file CSS
 
 export default function DetailUser() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -32,7 +32,51 @@ export default function DetailUser() {
 
   useEffect(() => {
     getUserById();
-  }, [id]);
+  }, []);
+  const lunaskanUser = async (id, navigate, sisahutang, kembalian) => {
+    const now = new Date();
+    const hariIni = now.toISOString();
+    const schemaLunasHutang = {
+      sisahutang: 0,
+      bayar: [...bayarHutangUser, {
+        bayar: sisahutang,
+        date: hariIni,
+        ket: "dilunaskan",
+      }]
+    }
+    const schemaLunasKembalian = {
+      kembalian: 0,
+      hutang: [...hutangUser, {
+        hutang: kembalian,
+        date: hariIni,
+        ket: "dilunaskan",
+      }]
+    }
+
+    const update = async (schema) => {
+      if (
+        window.confirm("Apakah anda yakin untuk melunaskan hutang ?")
+      ) {
+        try {
+          await axios.patch(`http://localhost:5001/users/${id}`, schema);
+          navigate('/'); // Navigate to a temporary route
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+
+    if (sisahutang > 0) {
+      update(schemaLunasHutang)
+    } else if (kembalian > 0) {
+      update(schemaLunasKembalian)
+    } else {
+      window.confirm("tidak ada hutang atau hutang kembalian")
+    }
+
+
+
+  }
 
   const getUserById = async () => {
     const response = await axios.get(`http://localhost:5001/users/${id}`);
@@ -56,51 +100,6 @@ export default function DetailUser() {
     }
   };
 
-  const lunaskanUser = async (id, navigate, sisahutang, kembalian) => {
-    const now = new Date();
-    const hariIni = now.toISOString();
-    const schemaLunasHutang = {
-      sisahutang: 0,
-      bayar: [...bayarHutangUser, {
-        bayar: sisahutang,
-        date: hariIni,
-        ket: "dilunaskan",
-      }]
-    }
-    const schemaLunasKembalian = {
-      kembalian: 0,
-      hutang: [...hutangUser, {
-        hutang: kembalian,
-        date: hariIni,
-        ket: "dilunaskan",
-      }]
-    }
-
-    const update = async (schema) => {
-      if (
-        window.confirm(`Apakah anda yakin untuk melunaskan hutang?`)
-      ) {
-        try {
-          await axios.patch(`http://localhost:5001/users/${id}`, schema);
-          navigate('/'); // Navigate to a temporary route
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    }
-
-    if (sisahutang > 0) {
-      update(schemaLunasHutang)
-    } else if (kembalian > 0) {
-      update(schemaLunasKembalian)
-    } else {
-      window.confirm(`tidak ada hutang atau hutang kembalian`)
-    }
-
-
-
-  }
-
   return (
     <>
       <Row className="mt-4">
@@ -118,7 +117,7 @@ export default function DetailUser() {
           </Row>
           <Row>
             <Col xs={4} md={4}>
-              <h5>Sisa Hutang</h5>
+              <h5>hutang pelanggan</h5>
             </Col>
             <Col xs={1} md={1}>
               <h5>:</h5>
@@ -129,7 +128,7 @@ export default function DetailUser() {
           </Row>
           <Row>
             <Col xs={4} md={4}>
-              <h5>Hutang Kembalian</h5>
+              <h5>anda berhutang</h5>
             </Col>
             <Col xs={1} md={1}>
               <h5>:</h5>
@@ -140,10 +139,10 @@ export default function DetailUser() {
           </Row>
         </Col>
         <Col xs={12} md={4}>
-          <Row>
+        <Row>
             <Col md={6}></Col>
             <Col md={6}>
-              <Button
+            <Button
                 variant="warning"
                 size="sm"
                 className="mx-1 mb-2"
@@ -155,6 +154,7 @@ export default function DetailUser() {
               >
                 Lunaskan
               </Button>
+
             </Col>
           </Row>
           <Row>
@@ -177,24 +177,20 @@ export default function DetailUser() {
               </Button>
             </Col>
           </Row>
-          <Row>
-            <Col md={6}></Col>
-            <Col md={6}>
-            </Col>
-          </Row>
+          
         </Col>
       </Row>
       <Row></Row>
-
+      
       <Row className="mt-4">
         <Col>
           <h6 className="text-center">Detail Hutang</h6>
-          <Table striped>
+          <Table striped hover className="custom-table">
             <thead>
               <tr>
-                <th>tanggal</th>
-                <th>jumlah</th>
-                <th>keterangan</th>
+                <th className="judul-tabel">tanggal</th>
+                <th className="judul-tabel">jumlah</th>
+                <th className="judul-tabel">keterangan</th>
               </tr>
             </thead>
             <tbody>
@@ -228,12 +224,12 @@ export default function DetailUser() {
         </Col>
         <Col>
           <h6 className="text-center">Detail Bayar Hutang</h6>
-          <Table striped>
+          <Table striped hover className="custom-table">
             <thead>
               <tr>
-                <th>tanggal</th>
-                <th>jumlah</th>
-                <th>keterangan</th>
+                <th className="judul-tabel">tanggal</th>
+                <th className="judul-tabel">jumlah</th>
+                <th className="judul-tabel">keterangan</th>
               </tr>
             </thead>
             <tbody>
@@ -265,14 +261,6 @@ export default function DetailUser() {
             </tbody>
           </Table>
         </Col>
-      </Row>
-      <Row>
-        <Col>
-
-        </Col>
-        <Col></Col>
-        <Col></Col>
-        <Col></Col>
       </Row>
     </>
   );

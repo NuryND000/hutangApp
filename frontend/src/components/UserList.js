@@ -82,8 +82,8 @@ const UserList = () => {
           <tr>
             <th className="judul-tabel">No</th>
             <th className="judul-tabel">Nama</th>
-            <th className="judul-tabel">Sisa Hutang</th>
-            <th className="judul-tabel">Hutang Kembalian</th>
+            <th className="judul-tabel">nominal</th>
+            
             <th className="judul-tabel">Status</th>
             <th className="judul-tabel action-column">Aksi</th>
           </tr>
@@ -94,10 +94,10 @@ const UserList = () => {
               <tr key={user._id}>
                 <td>{index + 1}</td>
                 <td>{user.name}</td>
-                <td>{user.sisahutang == 0 ? "-" : user.sisahutang}</td>
-                <td>{user.kembalian == 0 ? "-" : user.kembalian}</td>
+                
+                <td>{user.kembalian > 0 ? user.kembalian : user.sisahutang == 0 ? '-' : user.sisahutang}</td>
                 <td>
-                  {user.kembalian > 0 ? 'hutang kembalian' : user.sisahutang <= 0 ? 'lunas' : 'belum lunas'
+                  {user.kembalian > 0 ? 'anda berhutang' : user.sisahutang <= 0 ? 'lunas' : ' pelanggan berhutang'
                   }
                 </td>
                 <td className="action-column">
