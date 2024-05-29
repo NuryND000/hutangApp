@@ -78,7 +78,7 @@ const EditUser = () => {
     console.log(`updated ${updatedSisaHutangKembalian} sisaHutang ${sisaHutang}`);
 
     const hutangSchema = {
-      sisahutang: updatedSisaHutang,
+      sisahutang: Math.abs(updatedSisaHutang),
       kembalian: updatedKembalian <= 0 ? 0 : kembalian === 0 ? 0 : Math.abs(updatedKembalian),
       hutang: [...hutangUser, {
         date: date,
