@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { Col, Container, Form, ListGroup, Row, Table, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import NavBar from "./NavBar";
 
 export default function SearchUser() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -53,7 +54,9 @@ export default function SearchUser() {
     };
 
     return (
+        <><NavBar/>
         <Container fluid className="mt-4">
+            
             <Row>
                 <Col></Col>
                 <Col >
@@ -220,6 +223,6 @@ export default function SearchUser() {
 
 
         </Container>
-
+        </>
     );
 }

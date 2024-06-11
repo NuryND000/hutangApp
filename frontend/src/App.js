@@ -2,16 +2,15 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AddUser from "./components/AddUser";
 import "./components/App.css";
 import EditUser from "./components/EditUser";
-import NavBar from "./components/NavBar";
 import SearchPelanggan from "./components/SearchUser";
 import UserList from "./components/UserList";
 import DetailUser from "./components/detailUser";
 import TidakAda from "./components/tidakada";
+import Login from "./components/Login";
 
 function App() {
   return (
     <div className="pb-5">
-      <NavBar />
       <BrowserRouter>
         <div className="container">
           <Routes>
@@ -21,6 +20,7 @@ function App() {
             <Route path="edit/:id" element={<EditUser />} />
             <Route path="detail/:id" element={<DetailUser />} />
             <Route path="editpel/:id" element={<TidakAda />} />
+            <Route path="login" element={<Login />} />
           </Routes>
         </div>
       </BrowserRouter>

@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import NavBar from "./NavBar";
 
 function UpdatePelanggan() {
   const { id } = useParams();
@@ -31,6 +32,8 @@ function UpdatePelanggan() {
   };
 
   return (
+    <>
+    <NavBar/>
     <div className=" align-items-center justify-content-center">
       <div className="w-50 border bg-light text-black p-5 mt-5 mx-auto rounded">
         {" "}
@@ -52,6 +55,7 @@ function UpdatePelanggan() {
         </form>
       </div>
     </div>
+    </>
   );
 }
 

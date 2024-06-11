@@ -12,6 +12,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./App.css"; // Pastikan mengimpor file CSS
+import NavBar from "./NavBar";
 
 export default function DetailUser() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -102,6 +103,7 @@ export default function DetailUser() {
 
   return (
     <>
+    <NavBar/>
       <Row className="mt-4">
         <Col xs={12} md={8}>
           <Row>

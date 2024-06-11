@@ -5,6 +5,7 @@ import ReactDatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { Row, Col, Form, Button } from "react-bootstrap";
+import NavBar from "./NavBar";
 
 const EditUser = () => {
   const [name, setName] = useState("");
@@ -109,6 +110,8 @@ const EditUser = () => {
   };
 
   return (
+    <>
+    <NavBar/>
     <Row >
       <Col md={3}></Col>
       <Col md={6}>
@@ -210,6 +213,7 @@ const EditUser = () => {
       </Col>
       <Col md={3}></Col>
     </Row>
+    </>
   );
 };
 

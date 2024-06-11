@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
+import NavBar from "./NavBar";
 
 const AddUser = () => {
   const [name, setName] = useState("");
@@ -21,6 +22,7 @@ const AddUser = () => {
 
   return (
     <>
+    <NavBar/>
       <Row>
         <Col></Col>
         <Col><h1 className="py-2">Tambah pelanggan</h1></Col>

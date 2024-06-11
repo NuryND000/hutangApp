@@ -3,16 +3,20 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./App.css"; // Pastikan mengimpor file CSS
+import useAuth from "./authService";
+import NavBar from "./NavBar.js";
 
 const UserList = () => {
   const [users, setUser] = useState([]);
   const [showAdditionalField, setShowAdditionalField] = useState(false);
   const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const {token} = useAuth();
 
   const saveUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5001/users", { name });
+      await axios.post("http://localhost:5001/users", { name,password });
       setShowAdditionalField(false);
       getUsers();
     } catch (error) {
@@ -46,6 +50,8 @@ const UserList = () => {
   };
 
   return (
+    <>
+      <NavBar/>
     <Container fluid className="mt-4">
       <Row className="my-4">
         <Col md={2}>
@@ -67,6 +73,16 @@ const UserList = () => {
                     />
                   </Form.Group>
                 </Col>
+                {/* <Col>
+                  <Form.Group controlId="formName">
+                    <Form.Control
+                      type="text"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="***"
+                    />
+                  </Form.Group>
+                </Col> */}
                 <Col>
                   <Button variant="success" type="submit">
                     Save
@@ -131,6 +147,7 @@ const UserList = () => {
         )}
       </Table>
     </Container>
+    </>
   );
 };
 

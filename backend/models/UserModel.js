@@ -33,6 +33,13 @@ const User = mongoose.Schema({
         type: String,
         required: true
     },
+    password: {
+        type: String,
+        required: true
+    },
+    refresh_token: {
+        type: String,
+    },
     sisahutang:{
         type:Number,
         required:true,
